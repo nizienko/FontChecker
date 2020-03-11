@@ -12,9 +12,8 @@ repositories {
     mavenCentral()
     maven("https://jetbrains.bintray.com/intellij-third-party-dependencies")
 }
-val end2endTestImplementation by configurations.creating {
-    extendsFrom(configurations.testImplementation.get())
-}
+val robotServerPluginImplementation by configurations.creating
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("ru.yandex.qatools.ashot:ashot:1.5.4")
@@ -23,6 +22,8 @@ dependencies {
     testImplementation("junit", "junit", "4.12")
     testImplementation("org.jetbrains.test:remote-robot:0.0.1.SNAPSHOT-1")
     testImplementation("com.squareup.okhttp3:okhttp:3.9.0")
+
+    robotServerPluginImplementation("org.jetbrains.test:robot-server-plugin:0.0.1.SNAPSHOT-1")
 }
 
 intellij {
@@ -41,15 +42,24 @@ tasks {
     }
 }
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
-    changeNotes("""
+    changeNotes(
+        """
       Add change notes here.<br>
-      <em>most HTML tags may be used</em>""")
+      <em>most HTML tags may be used</em>"""
+    )
+}
+
+task<Copy>("copyPlugin") {
+    val zipPath = robotServerPluginImplementation.files.first { it.extension == "zip" }
+    val zipFile = file(zipPath)
+    val outputDir = file("build/idea-sandbox/plugins/")
+    from(zipTree(zipFile))
+    into(outputDir)
 }
 
 task("uiTest") {
     group = "verification"
-    dependencies {
-        implementation("org.jetbrains.test:robot-server-plugin:0.0.1.SNAPSHOT-1")
-    }
+    dependsOn(":copyPlugin")
+    dependsOn(":runIde")
     dependsOn(":test")
 }
