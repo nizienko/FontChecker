@@ -25,7 +25,7 @@ class CompareFontAction : AnAction() {
             println(chooseFontFilesDialog.newFile.path)
 
             val doc = Document(PageSize.A4, 25F, 25F, 30F, 30F)
-            PdfWriter.getInstance(doc, chooseFontFilesDialog.saveReportFile.outputStream())
+            PdfWriter.getInstance(doc, chooseFontFilesDialog.saveReportFile.apply { createNewFile() }.outputStream())
             doc.open()
 
             val stableFont = Font.createFont(Font.TRUETYPE_FONT, chooseFontFilesDialog.stableFile).deriveFont(35.0F)

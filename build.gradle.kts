@@ -14,6 +14,7 @@ repositories {
 }
 val robotServerPluginImplementation by configurations.creating
 
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("ru.yandex.qatools.ashot:ashot:1.5.4")
@@ -50,16 +51,19 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
 }
 
 task<Copy>("copyPlugin") {
-    val zipPath = robotServerPluginImplementation.files.first { it.extension == "zip" }
+    val zipPath by lazy { robotServerPluginImplementation.files.first { it.extension == "zip" } }
     val zipFile = file(zipPath)
     val outputDir = file("build/idea-sandbox/plugins/")
     from(zipTree(zipFile))
     into(outputDir)
 }
 
-task("uiTest") {
-    group = "verification"
+task<Copy>("cleanSandbox") {
+
+}
+
+task("runIdeForTests") {
+    group = "intellij"
     dependsOn(":copyPlugin")
     dependsOn(":runIde")
-    dependsOn(":test")
 }
