@@ -51,6 +51,7 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
 }
 
 task<Copy>("copyPlugin") {
+    dependsOn(":prepareSandbox")
     val zipPath by lazy { robotServerPluginImplementation.files.first { it.extension == "zip" } }
     val zipFile = file(zipPath)
     val outputDir = file("build/idea-sandbox/plugins/")
@@ -62,8 +63,6 @@ task<Copy>("cleanSandbox") {
 
 }
 
-task("runIdeForTests") {
-    group = "intellij"
+tasks.getByName("runIde") {
     dependsOn(":copyPlugin")
-    dependsOn(":runIde")
 }
