@@ -14,17 +14,17 @@ repositories {
 }
 val robotServerPluginImplementation by configurations.creating
 
-
+val remoteRobotVersion = "0.9.0"
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("ru.yandex.qatools.ashot:ashot:1.5.4")
     implementation("com.lowagie:itext:2.1.7")
 
     testImplementation("junit", "junit", "4.12")
-    testImplementation("org.jetbrains.test:remote-robot:0.0.1.SNAPSHOT-1")
+    testImplementation("org.jetbrains.test:remote-robot:$remoteRobotVersion")
     testImplementation("com.squareup.okhttp3:okhttp:3.9.0")
 
-    robotServerPluginImplementation("org.jetbrains.test:robot-server-plugin:0.0.1.SNAPSHOT-1")
+    robotServerPluginImplementation("org.jetbrains.test:robot-server-plugin:$remoteRobotVersion")
 }
 
 intellij {
@@ -49,6 +49,7 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
       <em>most HTML tags may be used</em>"""
     )
 }
+
 
 task<Copy>("copyPlugin") {
     dependsOn(":prepareSandbox")

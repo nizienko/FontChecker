@@ -65,7 +65,7 @@ class End2EndTest {
                 ok()
             }
         }
-        step("Check that report created") {
+        step("Check that report is created") {
             waitFor(
                 errorMessage = "failed to create report file",
                 duration = Duration.ofSeconds(10)
