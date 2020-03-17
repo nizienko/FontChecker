@@ -14,7 +14,7 @@ repositories {
 }
 val robotServerPluginImplementation by configurations.creating
 
-val remoteRobotVersion = "0.9.0"
+val remoteRobotVersion = "0.9.1"
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("ru.yandex.qatools.ashot:ashot:1.5.4")

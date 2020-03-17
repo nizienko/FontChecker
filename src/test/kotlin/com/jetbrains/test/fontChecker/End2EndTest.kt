@@ -53,8 +53,7 @@ class End2EndTest {
 
             toolsMenu.findAll<ComponentFixture>(
                 byXpath("Compare fonts", "//div[@class='ActionMenuItem' and @text='Compare fonts']")
-            ).first()
-                .click()
+            ).first().click()
         }
         step("Fill data") {
             find<CompareFontDialog>(CompareFontDialog.locator).apply {
